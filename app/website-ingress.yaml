@@ -1,17 +1,13 @@
-apiVersion: extensions/v1beta1
-kind: Ingress
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
 metadata:
-  name: website-ingress
-  labels:
-    app: argocdrocks
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
-    traefik.ingress.kubernetes.io/rewrite-target: /
+  name: argocdrocks
 spec:
-  rules:
-  - http:
-      paths:
-      - path: /app
-        backend:
-          serviceName: website-service
-          servicePort: 80
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: Host(`website.dev.local`)
+      services:
+      - port: 80
+        name: website-service
